@@ -1,6 +1,3 @@
-Here's a README file template for your AlgoSync website project. It's designed to describe the app, its purpose, technologies used, and how to set it up.
-
----
 
 # AlgoSync
 
