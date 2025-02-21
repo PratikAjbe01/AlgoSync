@@ -25,7 +25,7 @@ function Navbar() {
                 className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-200/20 
                           focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent
                           placeholder-gray-400 backdrop-blur-sm"
-                placeholder="Search location..."
+                placeholder="Search Algo..."
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 <HugeiconsIcon

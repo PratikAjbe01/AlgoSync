@@ -1,30 +1,34 @@
 import React, { useState } from 'react'
 
-function LinearSearch() {
+function KadaneAlgo() {
     const [array, setArray] = useState([]);
     const [target, setTarget] = useState(null);
     const [runData, setRunData] = useState(false);
     const [isRunning,setisRunning]=useState(false);
     const [color,setColor]=useState(-1);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState('Max Subarray Sum');
+    const [showSum,setShowSum]=useState(0);
     const highLightSearch=()=>{
         let found=false;
+        let maxSum=Number.MIN_SAFE_INTEGER;
+        let sum=0;
         let allTimers = [];
         for (let i = 0; i <= array.length; i++) {
             if (found) break; 
             function close(i) {
              const timer= setTimeout(function () {
                setColor(i);
-               if(array[i]==target){
-                setMessage(`Target found at index ${i}`);
-                setColor(i);
-                found=true;
+             sum+=parseInt(array[i]);
+             maxSum=Math.max(sum,maxSum);
+             setShowSum(maxSum);
+             if(sum<0){
+                sum=0;
+             }
+               if(i==array.length-1&&array[i]!=target){
+              
+              
                 allTimers.forEach(t => clearTimeout(t));
                 return;
-              
-               }
-               if(i==array.length-1&&array[i]!=target){
-                setMessage('Target not found in array');
             
                }
               }, i * 1000);
@@ -63,9 +67,8 @@ function LinearSearch() {
                                         flex items-center justify-center
                                         w-12 h-12 text-lg font-semibold rounded-md
                                         transition-colors duration-200
-                                        ${message === `Target found at index ${index}`
-                                            ? 'bg-green-500 text-white'
-                                            : color === index
+                                        ${
+                                             color === index
                                                 ? 'bg-yellow-400 text-gray-800'
                                                 : 'bg-white border-2 border-gray-300'
                                         }
@@ -76,7 +79,7 @@ function LinearSearch() {
                             ))}
                         </div>
                         <div className="text-center text-lg font-medium text-gray-700">
-                            {message}
+                            {message}: {showSum}
                         </div>
                     </div>
                 )}
@@ -96,17 +99,7 @@ function LinearSearch() {
                     />
                 </div>
 
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                        Enter Target Value
-                    </label>
-                    <input
-                        type="number"
-                        onChange={(e) => setTarget(e.target.value)}
-                        disabled={isRunning}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                    />
-                </div>
+               
 
                 <button
                     onClick={handleRun}
@@ -122,4 +115,4 @@ function LinearSearch() {
   )
 }
 
-export default LinearSearch
+export default KadaneAlgo
