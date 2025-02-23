@@ -7,6 +7,11 @@ import BinarySearch from './Pages/BinarySearch'
 import { Routes, Route } from "react-router-dom"
 import KadaneAlgo from './Pages/KadaneAlgo'
 import TwoPointer from './Pages/TwoPointer'
+import Stack from './Pages/Stack'
+import Queue from './Pages/Queue'
+import Dequeue from './Pages/Dequeue'
+import LinkList from './Pages/LinkList'
+import SlidingWindow from './Pages/SlidingWindow'
 
 function App() {
 
@@ -20,6 +25,11 @@ function App() {
   <Route path='/Binarysearch' element={<BinarySearch/>}/>
   <Route path='/KadaneAlgo' element={<KadaneAlgo/>}/>
   <Route path='/TwoPointer' element={<TwoPointer/>}/>
+  <Route path='/Stack' element={<Stack/>}/>
+  <Route path='/Queue' element={<Queue/>}/>
+  <Route path='/dQueue' element={<Dequeue/>}/>
+  <Route path='/LinkList' element={<LinkList/>}/>
+  <Route path='/SlidingWindow' element={<SlidingWindow/>}/>
 </Routes>
 
     </div>
