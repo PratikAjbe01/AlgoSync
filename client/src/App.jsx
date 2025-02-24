@@ -12,6 +12,7 @@ import Queue from './Pages/Queue'
 import Dequeue from './Pages/Dequeue'
 import LinkList from './Pages/LinkList'
 import SlidingWindow from './Pages/SlidingWindow'
+import Home from './Pages/Home'
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
   <Route path='/dQueue' element={<Dequeue/>}/>
   <Route path='/LinkList' element={<LinkList/>}/>
   <Route path='/SlidingWindow' element={<SlidingWindow/>}/>
+  <Route path='/' element={<Home/>}/>
 </Routes>
 
     </div>
