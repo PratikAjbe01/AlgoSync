@@ -2,6 +2,7 @@
 # AlgoSync
 
 AlgoSync is an interactive web application built with **React** and **Tailwind CSS**. It provides a visualization platform for Data Structures and Algorithms (DSA). Users can visualize the inner workings of various DSA algorithms through dynamic and easy-to-understand animations. The goal of this platform is to make learning and understanding DSA concepts more intuitive and engaging.
+Live Link:-https://algo-sync-ten.vercel.app/
 
 ---
 
