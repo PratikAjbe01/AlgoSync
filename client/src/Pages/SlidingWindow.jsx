@@ -1,122 +1,191 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function SlidingWindow() {
+function SlidingWindowMaxSum() {
     const [array, setArray] = useState([]);
-    const [target, setTarget] = useState(null);
-    const [runData, setRunData] = useState(false);
+    const [windowSize, setWindowSize] = useState(0);
+    const [currentWindow, setCurrentWindow] = useState([]);
+    const [windowSums, setWindowSums] = useState([]);
+    const [maxWindowSum, setMaxWindowSum] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
-    const [color, setColor] = useState([]);
     const [message, setMessage] = useState('');
 
-    const highLightSearch = () => {
-        let allTimers = [];
-        for (let i = 0; i <= array.length - target; i++) {
-            function close(i) {
-                const timer = setTimeout(function () {
-                    function highlightWindow(startIndex) {
-                        for (let j = 0; j < target; j++) {
-                            const timer = setInterval(() => {
-                                setColor(prevColor => [...prevColor, startIndex + j]);
-                            }, j * 500);
-                            allTimers.push(timer);
-                        }
-                        setColor([]);
-                    }
-                    highlightWindow(i);
-                }, i * 1000);
-                allTimers.push(timer);
-            }
-            close(i);
+    const runSlidingWindow = () => {
+        // Validate inputs
+        if (!array || array.length === 0 || !windowSize || windowSize > array.length || windowSize <= 0) {
+            setMessage('Please enter a valid array and window size.');
+            return;
         }
-        // Optionally clear allTimers after finishing the process
-        setTimeout(() => {
-            setColor([]); // Clear color after the loop completes
-        }, (array.length - target) * 1000);
+
+        // Reset state
+        setIsRunning(true);
+        setMessage('');
+        setWindowSums([]);
+        setMaxWindowSum(null);
+        
+        // Create a sequence of windows with their sums
+        const windows = [];
+        const sums = [];
+        let maxSum = -Infinity;
+        let maxSumWindow = [];
+
+        for (let i = 0; i <= array.length - windowSize; i++) {
+            const window = array.slice(i, i + windowSize);
+            const windowSum = window.reduce((sum, num) => sum + num, 0);
+            
+            windows.push(window);
+            sums.push(windowSum);
+
+            // Track maximum sum window
+            if (windowSum > maxSum) {
+                maxSum = windowSum;
+                maxSumWindow = window;
+            }
+        }
+
+        // Animate windows
+        let index = 0;
+        const windowInterval = setInterval(() => {
+            if (index < windows.length) {
+                setCurrentWindow(windows[index]);
+                setWindowSums(sums.slice(0, index + 1));
+                index++;
+            } else {
+                clearInterval(windowInterval);
+                setIsRunning(false);
+                setMessage('Sliding window visualization complete.');
+                setMaxWindowSum(maxSum);
+                setCurrentWindow([]);
+            }
+        }, 1000);
     };
 
     const handleArrayChange = (e) => {
         const value = e.target.value;
-        const inputArray = value.split(',').map(item => item.trim()).filter(item => item !== '');
+        const inputArray = value.split(',')
+            .map(item => {
+                const trimmed = item.trim();
+                return trimmed !== '' ? Number(trimmed) : null;
+            })
+            .filter(item => item !== null);
         setArray(inputArray);
+    };
+
+    const handleWindowSizeChange = (e) => {
+        setWindowSize(Number(e.target.value));
     };
 
     const handleRun = (e) => {
         e.preventDefault();
-        setRunData(true);
-        setIsRunning(true);
-        highLightSearch();
+        runSlidingWindow();
     };
 
     return (
-        <main className="min-h-screen bg-gray-50 pt-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                    <div className="mb-8">
-                        {runData && array && array.length > 0 && (
-                            <div className="space-y-4">
-                                <div className="flex flex-wrap gap-2 justify-center">
-                                    {array.map((value, index) => (
-                                        <div
-                                            key={index}
-                                            className={`
-                                                flex items-center justify-center
-                                                w-12 h-12 text-lg font-semibold rounded-md
-                                                transition-colors duration-200
-                                                ${color.includes(index)
-                                                    ? 'bg-yellow-400 text-gray-800'
-                                                    : 'bg-white border-2 border-gray-300'}
-                                            `}
-                                        >
-                                            {value}
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="text-center text-lg font-medium text-gray-700">
-                                    {message}
-                                </div>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+            <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+                    Sliding Window Max Sum Visualizer
+                </h2>
+
+                {/* Array Display */}
+                <div className="mb-6">
+                    <div className="flex flex-wrap gap-2 justify-center">
+                        {array.map((value, index) => (
+                            <div
+                                key={index}
+                                className={`
+                                    w-12 h-12 flex items-center justify-center 
+                                    rounded-md text-lg font-semibold
+                                    ${currentWindow.includes(value) 
+                                        ? 'bg-yellow-400 text-gray-800' 
+                                        : 'bg-gray-200 text-gray-600'}
+                                `}
+                            >
+                                {value}
                             </div>
-                        )}
+                        ))}
+                    </div>
+                </div>
+
+                {/* Window Sums Display */}
+                {windowSums.length > 0 && (
+                    <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-center mb-2">Window Sums</h3>
+                        <div className="flex flex-wrap gap-2 justify-center">
+                            {windowSums.map((sum, index) => (
+                                <div 
+                                    key={index} 
+                                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-md"
+                                >
+                                    Sum {index + 1}: {sum}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Max Sum Display */}
+                {maxWindowSum !== null && (
+                    <div className="mb-6 text-center">
+                        <h3 className="text-xl font-bold text-green-700">
+                            Maximum Window Sum: {maxWindowSum}
+                        </h3>
+                    </div>
+                )}
+
+                {/* Input Form */}
+                <form onSubmit={handleRun} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Enter Array Elements (comma-separated)
+                        </label>
+                        <input
+                            type="text"
+                            onChange={handleArrayChange}
+                            disabled={isRunning}
+                            placeholder="e.g., 1, 2, 3, 4, 5, 6"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md 
+                                       focus:ring-2 focus:ring-blue-500 
+                                       disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        />
                     </div>
 
-                    <form className="space-y-6">
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Enter Array Elements
-                            </label>
-                            <input
-                                type="text"
-                                onChange={handleArrayChange}
-                                disabled={isRunning}
-                                placeholder="e.g., 1, 2, 3, 4"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                            />
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Enter Window Size
-                            </label>
-                            <input
-                                type="number"
-                                placeholder='window size must be less than array size'
-                                onChange={(e) => setTarget(e.target.value)}
-                                disabled={isRunning}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                            />
-                        </div>
-
-                        <button
-                            onClick={handleRun}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Window Size
+                        </label>
+                        <input
+                            type="number"
+                            onChange={handleWindowSizeChange}
                             disabled={isRunning}
-                            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
-                        >
-                            Run
-                        </button>
-                    </form>
-                </div>
+                            placeholder="Enter window size"
+                            min="1"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md 
+                                       focus:ring-2 focus:ring-blue-500 
+                                       disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={isRunning}
+                        className="w-full bg-blue-600 text-white py-2 rounded-md 
+                                   hover:bg-blue-700 focus:outline-none focus:ring-2 
+                                   focus:ring-blue-500 focus:ring-offset-2 
+                                   disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                        {isRunning ? 'Running...' : 'Visualize Sliding Window'}
+                    </button>
+                </form>
+
+                {/* Message Display */}
+                {message && (
+                    <div className="mt-4 text-center text-sm text-gray-600">
+                        {message}
+                    </div>
+                )}
             </div>
-        </main>
+        </div>
     );
 }
 
-export default SlidingWindow;
+export default SlidingWindowMaxSum;
