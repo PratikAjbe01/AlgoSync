@@ -12,6 +12,11 @@ const algorithms = [
   { name: 'Dequeue', path: '/dqueue' },
   { name: 'Linked List', path: '/linklist' },
   { name: 'Sliding Window', path: '/slidingwindow' },
+  { name: 'bubble Sort', path: '/Sorting' },
+  { name: 'quick Sort', path: '/Sorting' },
+  { name: 'merge Sort', path: '/Sorting' },
+  { name: 'selection Sort', path: '/Sorting' },
+  { name: 'Insertion Sort', path: '/Sorting' },
 ];
 
 function Navbar() {

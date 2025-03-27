@@ -3,27 +3,6 @@ import { Search, Binary, Layers, MousePointerClick, Box, ListOrdered, LayoutList
 
 const algorithms = [
   {
-    name: 'Linear Search',
-    description: 'Sequential search algorithm that checks every element in the list.',
-    path: '/linearsearch',
-    icon: Search,
-    category: 'Searching'
-  },
-  {
-    name: 'Binary Search',
-    description: 'Efficient search algorithm for sorted arrays using divide and conquer.',
-    path: '/binarysearch',
-    icon: Binary,
-    category: 'Searching'
-  },
-  {
-    name: "Kadane's Algorithm",
-    description: 'Find the maximum subarray sum in a one-dimensional array.',
-    path: '/kadanealgo',
-    icon: Layers,
-    category: 'Dynamic Programming'
-  },
-  {
     name: 'Two Pointer',
     description: 'Technique using two pointers to solve array-related problems.',
     path: '/twopointer',
@@ -64,7 +43,36 @@ const algorithms = [
     path: '/slidingwindow',
     icon: SlidersHorizontal,
     category: 'Array'
-  }
+  },
+  {
+    name: 'Sorting Algorithm',
+    description: 'all 5 major sorting algo bubble ,selection,merge,quick,insertion.',
+    path: '/Sorting',
+    icon: SlidersHorizontal,
+    category:  'Sorting'
+  },
+  {
+    name: 'Linear Search',
+    description: 'Sequential search algorithm that checks every element in the list.',
+    path: '/linearsearch',
+    icon: Search,
+    category: 'Searching'
+  },
+  {
+    name: 'Binary Search',
+    description: 'Efficient search algorithm for sorted arrays using divide and conquer.',
+    path: '/binarysearch',
+    icon: Binary,
+    category: 'Searching'
+  },
+  {
+    name: "Kadane's Algorithm",
+    description: 'Find the maximum subarray sum in a one-dimensional array.',
+    path: '/kadanealgo',
+    icon: Layers,
+    category: 'Dynamic Programming'
+  },
+
 ];
 
 function Home() {

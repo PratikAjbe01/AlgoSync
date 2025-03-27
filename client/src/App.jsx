@@ -13,6 +13,7 @@ import Dequeue from './Pages/Dequeue'
 import LinkList from './Pages/LinkList'
 import SlidingWindow from './Pages/SlidingWindow'
 import Home from './Pages/Home'
+import SortingAlgo from './Pages/SortingAlgo'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
   <Route path='/dQueue' element={<Dequeue/>}/>
   <Route path='/LinkList' element={<LinkList/>}/>
   <Route path='/SlidingWindow' element={<SlidingWindow/>}/>
+  <Route path='/Sorting' element={<SortingAlgo/>}/>
   <Route path='/' element={<Home/>}/>
 </Routes>
 
