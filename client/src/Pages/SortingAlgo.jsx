@@ -125,45 +125,66 @@ function SortingAlgo() {
     const mergeSort = (arr) => {
         const steps = [];
         const arrCopy = [...arr];
-
-        const merge = (left, right) => {
-            let result = [];
-            let leftIndex = 0;
-            let rightIndex = 0;
-
-            while (leftIndex < left.length && rightIndex < right.length) {
+    
+        const merge = (array, left, mid, right) => {
+            let i = left;
+            let j = mid + 1;
+            let k = 0;
+            const temp = [];
+    
+            while (i <= mid && j <= right) {
                 steps.push({
-                    array: [...arrCopy],
-                    compared: [leftIndex, rightIndex],
+                    array: [...array],
+                    compared: [i, j],
                     sorted: []
                 });
-
-                if (left[leftIndex] < right[rightIndex]) {
-                    result.push(left[leftIndex]);
-                    leftIndex++;
+    
+                if (array[i] <= array[j]) {
+                    temp[k++] = array[i++];
                 } else {
-                    result.push(right[rightIndex]);
-                    rightIndex++;
+                    temp[k++] = array[j++];
                 }
             }
-
-            return [...result, ...left.slice(leftIndex), ...right.slice(rightIndex)];
+    
+            while (i <= mid) {
+                steps.push({
+                    array: [...array],
+                    compared: [i, -1], // Indicate only one index compared
+                    sorted: []
+                });
+                temp[k++] = array[i++];
+            }
+    
+            while (j <= right) {
+                steps.push({
+                    array: [...array],
+                    compared: [-1, j], // Indicate only one index compared
+                    sorted: []
+                });
+                temp[k++] = array[j++];
+            }
+    
+            for (let l = 0; l < k; l++) {
+                array[left + l] = temp[l];
+            }
+    
+            steps.push({
+                array: [...array],
+                compared: [],
+                sorted: Array.from({ length: k }, (_, index) => left + index)
+            });
         };
-
-        const mergeSortRecursive = (array) => {
-            if (array.length <= 1) return array;
-
-            const mid = Math.floor(array.length / 2);
-            const left = array.slice(0, mid);
-            const right = array.slice(mid);
-
-            return merge(
-                mergeSortRecursive(left),
-                mergeSortRecursive(right)
-            );
+    
+        const mergeSortRecursive = (array, left, right) => {
+            if (left < right) {
+                const mid = Math.floor((left + right) / 2);
+                mergeSortRecursive(array, left, mid);
+                mergeSortRecursive(array, mid + 1, right);
+                merge(array, left, mid, right);
+            }
         };
-
-        mergeSortRecursive(arrCopy);
+    
+        mergeSortRecursive(arrCopy, 0, arrCopy.length - 1);
         return steps;
     };
 
