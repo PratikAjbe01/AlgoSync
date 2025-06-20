@@ -5,6 +5,8 @@ AlgoSync is an interactive web application built with **React** and **Tailwind C
 Live Link:-https://algo-sync-ten.vercel.app/
 
 ---
+## Demo Video
+
 
 ## Features
 
